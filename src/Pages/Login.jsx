@@ -1,9 +1,34 @@
 import { React, useEffect } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const responseMessage = (response) => {
-    console.log(response);
+    axios
+      .post(`${import.meta.env.VITE_BACKEND_URL}/auth/login/google`, {
+        code: response.credential,
+      })
+      .then((res) => {
+        localStorage.setItem("token", res.data.data.access);
+        axios
+          .get(`${import.meta.env.VITE_BACKEND_URL}/auth/user`, {
+            headers: {
+              Authorization: `Bearer ${res.data.data.access}`,
+            },
+          })
+          .then((res) => {
+            localStorage.setItem("user", JSON.stringify(res.data));
+            navigate("/home");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const errorMessage = (error) => {
     console.log(error);

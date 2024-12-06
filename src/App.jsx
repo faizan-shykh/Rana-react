@@ -9,6 +9,7 @@ const Profile = lazy(() => import("./Pages/Profile"));
 const Contact = lazy(() => import("./Pages/Contact"));
 const Service = lazy(() => import("./Pages/Services"));
 const About = lazy(() => import("./Pages/About"));
+
 function App() {
   return (
     <>
@@ -19,9 +20,9 @@ function App() {
             <Route
               path="/"
               element={
-                // <ProtectedRoute>
-                <Home />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
               }
             />
             <Route
@@ -35,25 +36,25 @@ function App() {
             <Route
               path="/contact"
               element={
-                // <ProtectedRoute>
-                <Contact />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <Contact />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/services"
               element={
-                // <ProtectedRoute>
-                <Service />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <Service />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/about"
               element={
-                // <ProtectedRoute>
-                <About />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <About />
+                </ProtectedRoute>
               }
             />
             <Route

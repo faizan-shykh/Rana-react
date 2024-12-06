@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   PaymentElement,
   Elements,
   useStripe,
   useElements,
-} from '@stripe/react-stripe-js';
+} from "@stripe/react-stripe-js";
 
 export const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [emailInput, setEmailInput] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [emailInput, setEmailInput] = useState("");
 
   const backendUrl = import.meta.env.VITE_STRIPE_PK_AIRCODE_URL;
 
@@ -34,15 +34,15 @@ export const CheckoutForm = () => {
 
     // Create the PaymentIntent and obtain clientSecret from your server endpoint
     const res = await fetch(backendUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        currency: 'usd',
+        currency: "usd",
         email: emailInput,
         amount: price * 100,
-        paymentMethodType: "card"
+        paymentMethodType: "card",
       }),
     });
 
@@ -70,11 +70,17 @@ export const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='px-4'>
-      <div className='mb-3'>
+    <form onSubmit={handleSubmit} className="px-4">
+      <div className="mb-3">
         <label htmlFor="email-input">Email</label>
         <div>
-          <input value={emailInput} onChange={(e => setEmailInput(e.target.value))} type="email" id="email-input" placeholder='johndoe@gmail.com' />
+          <input
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
+            type="email"
+            id="email-input"
+            placeholder="johndoe@gmail.com"
+          />
         </div>
       </div>
       <PaymentElement />

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import { Elements } from "@stripe/react-stripe-js";
-import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { CheckoutForm } from "../components/CheckoutForm";
+import axios from "axios";
+import Nav from "../components/Nav";
+import { useNavigate } from "react-router-dom";
 
 const options = {
   mode: "payment",
@@ -18,12 +20,45 @@ const Home = () => {
     { id: 2, name: "Assets under holding", value: "$119 trillion" },
     { id: 3, name: "New users annually", value: "46,000" },
   ];
+
+  const [user, setUser] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/auth/user`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        console.log(res);
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  }, []);
+
+  const buyNow = () => {
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/stripe/create-payment-intent`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        window.location.href =(`https://checkout.stripe.com/c/pay/${res.data.id}`)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <Nav />
-      {/* <Elements stripe={stripePromise} options={options}>
-        <CheckoutForm />
-      </Elements> */}
 
       {/* Main */}
       <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 md:py-52 py-28 text-center lg:pt-32">
@@ -212,7 +247,7 @@ const Home = () => {
                 </ul>
                 <button
                   type="submit"
-                  title="Submit"
+                  onClick={buyNow}
                   className="block w-full py-3 px-6 text-center rounded-xl transition bg-purple-600 hover:bg-purple-700 active:bg-purple-800 focus:bg-indigo-600"
                 >
                   <span className="text-white font-semibold">Buy Now</span>

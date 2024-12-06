@@ -21,9 +21,9 @@ const Home = () => {
   return (
     <>
       <Nav />
-      <Elements stripe={stripePromise} options={options}>
+      {/* <Elements stripe={stripePromise} options={options}>
         <CheckoutForm />
-      </Elements>
+      </Elements> */}
 
       {/* Main */}
       <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 md:py-52 py-28 text-center lg:pt-32">

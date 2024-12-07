@@ -50,7 +50,7 @@ const Home = () => {
       )
       .then((res) => {
         console.log(res);
-        window.location.href =(`https://checkout.stripe.com/c/pay/${res.data.id}`)
+        window.location.href = `https://checkout.stripe.com/c/pay/${res.data.id}`;
       })
       .catch((err) => {
         console.log(err);
